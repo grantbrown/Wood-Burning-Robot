@@ -5,6 +5,8 @@ These are some hacked together scripts for my hacked together wood burning robot
 
 The code is pretty rough, so be warned. 
 
+Youtube: http://youtu.be/i0HE7dAw2ns?hd=1
+
 **Scripts**
 
 ======================= =======================================================================================================

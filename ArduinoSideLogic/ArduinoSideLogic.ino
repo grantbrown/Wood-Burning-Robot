@@ -96,6 +96,13 @@ int move_y(int y)
       stepper2.step(dir);
       delay(10);
     }
+    //Shake
+    stepper2.step(dir);
+    stepper2.step((-1)*dir);
+    stepper2.step(dir);
+    stepper2.step((-1)*dir);
+    stepper2.step(dir);
+    stepper2.step((-1)*dir);
 
   }
   return(1);
@@ -111,7 +118,7 @@ int burn(int ms)
   }
   else
   {
-  
+    delay(50);
     for (int i = 0; i < 8; i++)
     {
       z_motor.run(RELEASE);
@@ -121,12 +128,12 @@ int burn(int ms)
       
     }
     //delay(ms/13);
-    for (unsigned int i = 0; i < (ms/1820)*(ms/1820); i++)
+    for (unsigned int i = 0; i < (ms/2500)*(ms/2500); i++)
     {
        z_motor.run(BACKWARD);
        delay(1);
        z_motor.run(RELEASE);
-       delay(1);
+       delay(3);
     }
     //delay(ms*ms/50);
     for (int i = 0; i < 20; i++)

@@ -4,7 +4,12 @@ import time
 import random
 
 
-indata = np.genfromtxt("./NatalieEricFam.csv", dtype = None, delimiter = ",", names = None)
+indata = np.genfromtxt("./compressed.csv", dtype = None, delimiter = ",", names = None)
+#hack:
+
+indata[0][0] = indata[0][1]
+
+
 if indata.shape[0] > indata.shape[1]:
     indata = indata.transpose()
 #idx = range(indata.shape[1])
@@ -52,7 +57,7 @@ for i in range(indata.shape[0]):
 
 
 
-steps =4
+steps =3
 increasing_columnwise = True
 
 

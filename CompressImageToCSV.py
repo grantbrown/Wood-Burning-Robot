@@ -2,8 +2,8 @@ import numpy as np
 from scipy import ndimage as img
 import matplotlib.pyplot as plt
 
-image = img.imread("./NatalieEricFam.png")
-outfilename = "./NatalieEricFam.csv"
+image = img.imread("./MomDad1.png")
+outfilename = "./momdad1.csv"
 
 def compress(im, pixels, invert = True):
     rw_int = im.shape[0]/pixels
@@ -21,6 +21,7 @@ def compress(im, pixels, invert = True):
     return(outarr)
 
 compressed = compress(image, 1, True)
+#compressed = compressed.transpose()
 compressed -= np.min(compressed)
 compressed[0][0] = np.max(compressed)
 #compressed_med = img.median_filter(compressed, 1)

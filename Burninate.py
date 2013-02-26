@@ -4,13 +4,13 @@ import time
 import random
 
 
-indata = np.genfromtxt("./compressed.csv", dtype = None, delimiter = ",", names = None)
+indata = np.genfromtxt("./momdad1.csv", dtype = None, delimiter = ",", names = None)
 #hack:
 
 indata[0][0] = indata[0][1]
 
 
-if indata.shape[0] > indata.shape[1]:
+if indata.shape[1] > indata.shape[0]:
     indata = indata.transpose()
 #idx = range(indata.shape[1])
 #idx.reverse()
@@ -26,7 +26,9 @@ assert(not np.any(indata< 0))
 
 #ser = serial.Serial("/dev/cu.usbmodemfa131",9600, timeout = 100)
 #ser = serial.Serial("/dev/cu.usbmodemfa131",57600, timeout = 1)
-ser = serial.Serial("/dev/cu.usbmodemfd121",57600, timeout = 1)
+#ser = serial.Serial("/dev/cu.usbmodemfd121",57600, timeout = 1)
+ser = serial.Serial("/dev/ttyACM0",57600, timeout = 1)
+
 
 
 print ser.portstr
@@ -57,7 +59,7 @@ for i in range(indata.shape[0]):
 
 
 
-steps =3
+steps =2
 increasing_columnwise = True
 
 

@@ -36,7 +36,6 @@ int del;
 
 Stepper stepper2(motorSteps, motorPin1,motorPin2); 
 
-
 void setup()
 {
   pinMode(led, OUTPUT);
@@ -44,7 +43,7 @@ void setup()
 
   // start serial port at 9600 bps:
   step_motor.setSpeed(31);  // 1 rpm  
-  stepper2.setSpeed(15);
+  stepper2.setSpeed(13);
   z_motor.setSpeed(100);
   z_motor.run(RELEASE);
   Serial.begin(57600);
@@ -57,10 +56,21 @@ int go(int x, int y)
 }
 
 
+void goslow()
+{
+  step_motor.setSpeed(10);  // 1 rpm  
+  //stepper2.setSpeed(5);
+}
 
+void gofast()
+{
+  step_motor.setSpeed(31);  // 1 rpm  
+  //stepper2.setSpeed(15);
+}
 
 int move_x(int x)
 {
+  gofast();
   int steps = x - X;
   X = x;
   if (steps == 0)
@@ -69,11 +79,19 @@ int move_x(int x)
   }
   else if (steps < 0)
   {
-    step_motor.step(steps*(-1), BACKWARD, DOUBLE);
+    int steps1 = floor(steps*0.9);
+    int steps2 = steps - floor(steps*0.9);
+    step_motor.step(steps1*(-1), BACKWARD, DOUBLE);
+    goslow();
+    step_motor.step(steps2*(-1), BACKWARD, DOUBLE);
   }
   else if (steps > 0)
   {
-    step_motor.step(steps, FORWARD, DOUBLE);
+    int steps1 = floor(steps*0.9);
+    int steps2 = steps - floor(steps*0.9);
+    step_motor.step(steps1, FORWARD, DOUBLE);
+    goslow();
+    step_motor.step(steps2, FORWARD, DOUBLE);
   }
   return(1);
 }
@@ -94,17 +112,18 @@ int move_y(int y)
     for (int i = 0; i < abs(steps); i ++)
     {
       stepper2.step(dir);
-      delay(10);
+      delay(5);
     }
     //Shake
-    stepper2.step(dir);
-    stepper2.step((-1)*dir);
-    stepper2.step(dir);
-    stepper2.step((-1)*dir);
-    stepper2.step(dir);
-    stepper2.step((-1)*dir);
+    //stepper2.step(dir);
+    //stepper2.step((-1)*dir);
+    //stepper2.step(dir);
+    //stepper2.step((-1)*dir);
+    //stepper2.step(dir);
+    //stepper2.step((-1)*dir);
 
   }
+  delay(20);
   return(1);
 }
 
@@ -112,37 +131,43 @@ int move_y(int y)
 
 int burn(int ms)
 {
-  if (ms <= 10)
+  if (ms <= 5)
   {
     return(0);
   }
   else
   {
-    delay(50);
-    for (int i = 0; i < 8; i++)
+    delay(7);
+    for (int i = 0; i < 3; i++)
     {
       z_motor.run(RELEASE);
-      delay(4);
       z_motor.run(BACKWARD);
-      delay(6);
+      delay(1);
       
     }
     //delay(ms/13);
-    for (unsigned int i = 0; i < (ms/2500)*(ms/2500); i++)
+    //for (unsigned int i = 0; i < (ms/2500)*(ms/2500); i++)
+    int msq = (ms/5800);
+    
+    msq = msq * msq;
+    for (unsigned int i = 0; i < msq; i++)
     {
        z_motor.run(BACKWARD);
        delay(1);
        z_motor.run(RELEASE);
        delay(3);
     }
+    z_motor.run(FORWARD);
+    delay(3);
+    z_motor.run(RELEASE);
     //delay(ms*ms/50);
-    for (int i = 0; i < 20; i++)
-    {
-      z_motor.run(FORWARD);
-      delay(1);
-      z_motor.run(RELEASE);
-      delay(1);
-    }
+    //for (int i = 0; i < 4; i++)
+    //{
+    //  z_motor.run(FORWARD);
+    //  delay(1);
+    //  z_motor.run(RELEASE);
+    //  delay(1);
+    //}
     
 //    z_motor.run(FORWARD);
 //    delay(30);
@@ -176,10 +201,10 @@ void loop()
       Serial.println("Y");
       maxY = Serial.parseInt();
       //Move around the periphs
-      move_x(maxX);
-      move_y(maxY);
-      move_x(0);
-      move_y(0);
+      //move_x(maxX);
+      //move_y(maxY);
+      //move_x(0);
+      //move_y(0);
       Serial.println("N");
       
       
